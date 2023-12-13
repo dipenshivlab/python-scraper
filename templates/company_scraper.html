@@ -1,0 +1,56 @@
+{% extends 'admin/base_site.html' %}
+
+{% block content %}
+<style>
+    /* Your form-specific styles here */
+    /* Ensure they don't affect other parts of the page */
+    .my-form {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;;
+        /* width: 300px; */
+    }
+    .my-form input[type="text"],
+    .my-form input[type="number"] {
+        display: block;
+        margin-bottom: 10px;
+        width: calc(100% - 12px); /* Adjust width for inputs */
+        padding: 8px;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+    }
+    .my-form input[type="submit"] {
+        background-color: #007bff; /* Change button color */
+        color: white;
+        border: none;
+        cursor: pointer;
+        width: calc(8% - 12px); /* Adjust width for button */
+        padding: 8px;
+        border-radius: 3px;
+        margin-top: 10px; /* Adjust distance from last input */
+    }
+    .my-form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+    /* Other form styles here */
+</style>
+
+<div class="my-form">
+    <form method="post" action="{% url 'service' %}">
+        {% csrf_token %}
+        <label for="url">Web Scraping Url:</label>
+        <input type="text" id="url" name="url" required placeholder="Enter URL">
+
+        <label for="page">Page count:</label>
+        <input type="number" id="page" name="page" required min="0" placeholder="Enter Page Count">
+
+        <label for="file">Position:</label>
+        <input type="text" id="position" name="position" required placeholder="Enter Position">
+        
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock %}

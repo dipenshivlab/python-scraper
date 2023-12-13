@@ -1,0 +1,86 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+{% block extrahead %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body table-responsive">
+          <table id="result_list" class="table table-hover table-striped  table-head-fixed">
+            <thead>
+                <th>Client Name</th>
+                <th>Client Company</th>
+                <th>Position</th>
+                <th>Industry</th>
+                <th>Employee Size</th>
+                <th>Location</th>
+                <th>Review For</th>
+                <th>Review</th>
+                <th>Review Date</th>
+                <th>Project Category</th>
+                <th>Project Budgets</th>
+                <th>Project Duration</th>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                <tr>
+                    <td>{{review.client_name}}</td>
+                    <td>{{review.client_company}}</td>
+                    <td>{{review.position}}</td>
+                    <td>{{review.industry}}</td>
+                    <td>{{review.employee_size}}</td>
+                    <td>{{review.location}}</td>
+                    <td>{{review.review_for}}</td>
+                    <td>{{review.review}}</td>
+                    <td>{{review.review_date}}</td>
+                    <td>{{review.project_category}}</td>
+                    <td>{{review.project_budgets}}</td>
+                    <td>{{review.project_duration}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+          <br></br>
+          <nav aria-label="...">
+            <ul class="pagination " style="justify-content: center;font-size: 15px;">
+              {% if reviews.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ reviews.previous_page_number }}">Previous</a></li>
+              {% endif %}
+              {% for page in reviews.paginator.page_range%}
+                {% if page == reviews.number %}
+                  <li class="page-item active" aria-current="page"><span class="page-link">{{page}}</span>
+                {% else %}
+                  <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% if reviews.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ reviews.next_page_number }}">Next</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+      </div>
+      </div>
+      {% endblock %}      
+
+{% block extra_js %}
+<script src="{% static 'admin-lte/plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTables
+        $('#result_list').DataTable(
+            {
+            "paging": false,
+            "info": false,
+            "pageLength":5,
+            });
+        
+    });
+</script>
+
+{% endblock %}

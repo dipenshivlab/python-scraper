@@ -1,0 +1,62 @@
+{% extends "admin/base_login.html" %}
+{% load i18n static %}
+
+{% block content %}
+    {% if form.errors and not form.non_field_errors %}
+        <p class="alert alert-danger">
+            {% if form.errors.items|length == 1 %}{% trans "Please enter the login credential." %}{% else %}
+                {% trans "Please enter the login credential." %}{% endif %}
+        </p>
+    {% endif %}
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="alert alert-danger">
+                <!-- {{ error }} -->
+                {% trans "Please enter the correct username and password." %}
+            </p>
+        {% endfor %}
+    {% endif %}
+   
+    
+    <form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+        <div class="form-group has-feedback">
+            <input type="text" id="id_username" name="username" class="form-control" placeholder="Username">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            {{ form.username.errors }}
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" id="id_password" name="password" class="form-control"
+                   placeholder="Password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            {{ form.password.errors }}
+            <input type="hidden" name="next" value="{{ next }}"/>
+        </div>
+        {% url 'admin_password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+            <div class="password-reset-link">
+                <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+            </div>
+        {% endif %}
+        <div class="row justify-content-center">
+            <!-- /.col -->
+            <div class="col-xs-4">
+                <button type="submit" style="font-weight: bold; background-color: #2980b9; transition: background-color 0.3s; width: 120px;"
+                        class="btn  btn-block  btn-flat" onmouseover="this.style.backgroundColor='#f0f0f0'" onmouseout="this.style.backgroundColor='#2980b9'" >
+                        {% trans 'Login' %}</button>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+
+
+    {% if user.is_authenticated %}
+        <p class="alert alert-danger">
+            {% blocktrans trimmed %}
+                You are authenticated as {{ username }}, but are not authorized to
+                access this page. Would you like to login to a different account?
+            {% endblocktrans %}
+        </p>
+    {% endif %}
+
+{% endblock %}
